@@ -1,16 +1,16 @@
 (function () {
-    var canvas = document.createElement('canvas');
-    var ctx = canvas.getContext('2d');
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
 
     var w = canvas.width = innerWidth;
     var h = canvas.height = innerHeight;
 
     var particles = [];
-    var properties = {
-        bgColor         : 'rgba(17, 17, 19, 1)',
-        particleColor   : 'rgba(255, 40, 40, 1)',
-        particleRadius  : 3,
-        particleCount   : 60,
+    const properties = {
+        bgColor             : 'rgba(17, 17, 19, 1)',
+        particleColor       : 'rgba(255, 40, 40, 1)',
+        particleRadius      : 3,
+        particleCount       : 60,
         particleMaxVelocity : 0.5,
     }
 
@@ -29,13 +29,12 @@
             this.velocityY = Math.random() * properties.particleMaxVelocity * 2 - properties.particleMaxVelocity;
         }
 
-
         updatePos() {
-            let overPlusX, overMinusX = this.#checkPos(this.x, this.velocityX, w);
-            overPlusX || overMinusX ? this.velocityX *= -1 : console.log(this.velocityX);
+            let overX = this.#checkPos(this.x, this.velocityX, w);
+            overX[0] || overX[1] ? this.velocityX *= -1 : this.velocityX;
 
-            let overPlusY, overMinusY = this.#checkPos(this.y, this.velocityY, h);
-            overPlusY || overMinusY ? this.velocityY *= -1 : this.velocityY;
+            let overY = this.#checkPos(this.y, this.velocityY, h);
+            overY[0] || overY[1] ? this.velocityY *= -1 : this.velocityY;
 
             this.x += this.velocityX;
             this.y += this.velocityY;
@@ -44,7 +43,8 @@
         #checkPos(coord, velocity, side) {
             let isOverPositive = coord + velocity > side && velocity > 0;
             let isOverNegative = coord + velocity < 0 && velocity < 0;
-            return isOverPositive, isOverNegative; 
+
+            return [isOverPositive, isOverNegative]; 
         }
 
         reDraw() {
