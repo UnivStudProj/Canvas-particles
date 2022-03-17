@@ -2,16 +2,17 @@
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
-    var w = canvas.width = innerWidth;
+    var w = canvas.width =  innerWidth;
     var h = canvas.height = innerHeight;
 
     var particles = [];
     const properties = {
         bgColor             : 'rgba(17, 17, 19, 1)',
-        particleColor       : 'rgba(255, 40, 40, 1)',
+        particleColor       : 'hsla(300, 87%, 55%, 1)',
         particleRadius      : 3,
         particleCount       : 60,
         particleMaxVelocity : 0.5,
+        lineLength          : 150,
     }
 
     document.querySelector('body').appendChild(canvas);
@@ -61,6 +62,32 @@
         ctx.fillRect(0, 0, w, h);
     }
 
+    function drawLines() {
+        let x1, y1, x2, y2, length, opacity;
+        // For each particle getting its coords (Main)
+        // and other particles coords (Other)
+        particles.forEach(particleMain => {
+            x1 = particleMain.x;
+            y1 = particleMain.y;
+            particles.forEach(particleOther => {
+                x2 = particleOther.x;
+                y2 = particleOther.y;
+                length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+
+                if (length < properties.lineLength) {
+                    opacity = 1 - length / properties.lineLength;
+                    ctx.lineWidth = '0,5';
+                    ctx.strokeStyle = `hsla(${300 - opacity * 110}, 80%, 58%, ${opacity})`;
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.lineTo(x2, y2);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            });
+        });
+    }
+
     function reDrawParticles() {
         particles.forEach(particle => {
             particle.updatePos();
@@ -71,7 +98,7 @@
     function loop() {
         reDrawBackground();
         reDrawParticles();
-        console.log(2);
+        drawLines();
         requestAnimationFrame(loop);
     }
 
