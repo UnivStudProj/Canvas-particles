@@ -7,8 +7,8 @@
 
     var particles = [];
     const properties = {
-        bgColor             : 'rgba(17, 17, 19, 1)',
-        particleColor       : 'hsla(300, 87%, 55%, 1)',
+        bgColor             : 'rgb(17, 17, 19)',
+        particleColor       : 'hsl(300, 87%, 55%)',
         particleRadius      : 3,
         particleCount       : 60,
         particleMaxVelocity : 0.5,
@@ -77,11 +77,12 @@
                 if (length < properties.lineLength) {
                     opacity = 1 - length / properties.lineLength;
                     ctx.lineWidth = '0,5';
-                    ctx.strokeStyle = `hsla(${300 - opacity * 110}, 80%, 58%, ${opacity})`;
+                    ctx.strokeStyle = `hsla(${300 - opacity * 90}, 80%, 58%, ${opacity})`;
                     ctx.beginPath();
                     ctx.moveTo(x1, y1);
                     ctx.lineTo(x2, y2);
                     ctx.closePath();
+                    // ctx.filter = 'drop-shadow(0px 0px 5px purple)';
                     ctx.stroke();
                 }
             });
